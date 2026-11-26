@@ -258,14 +258,14 @@
     const ns = "http://www.w3.org/2000/svg";
     const layers = [4, 5, 5, 4].map((count, layer) =>
       Array.from({ length: count }, (_, index) => ({
-        x: 54 + layer * 124,
-        y: 170 + (index - (count - 1) / 2) * 55
+        x: 55 + layer * 170,
+        y: 75 + (index - (count - 1) / 2) * 28
       }))
     );
     layers.forEach((layer, layerIndex) => {
       if (layerIndex < layers.length - 1) {
         layer.forEach((point, from) => layers[layerIndex + 1].forEach((next, to) => {
-          const d = `M ${point.x} ${point.y} C ${point.x + 52} ${point.y}, ${next.x - 52} ${next.y}, ${next.x} ${next.y}`;
+          const d = `M ${point.x} ${point.y} C ${point.x + 70} ${point.y}, ${next.x - 70} ${next.y}, ${next.x} ${next.y}`;
           const line = document.createElementNS(ns, "path");
           line.setAttribute("d", d);
           line.classList.add("network-link");
