@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#17120f" />
+  <meta name="description" content="An interactive, vintage-inspired 4×4 perceptron laboratory." />
+  <title>Perceptron Laboratory — Interactive Classifier</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="llm.css" />
+</head>
+<body>
+  <main class="site-shell">
+    <header class="hero">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Interactive neural apparatus</div>
+      <div class="hero-row">
+        <div>
+          <h1>Perceptron <span>Laboratory</span></h1>
+          <p>A working 4×4 classifier, rebuilt as a tactile 1960s teaching machine.</p>
+        </div>
+        <div class="model-plate" aria-label="Perceptron laboratory unit">
+          <small>LAB</small><strong>UNIT</strong><em>INTERACTIVE CLASSIFIER</em>
+        </div>
+      </div>
+    </header>
+
+    <section class="workbench" aria-label="Interactive perceptron workbench">
+      <div class="bench-glow"></div>
+      <div class="baseplate">
+        <i class="screw s1"></i><i class="screw s2"></i><i class="screw s3"></i><i class="screw s4"></i>
+
+        <svg class="wire-layer" id="wireLayer" aria-hidden="true">
+          <defs>
+            <filter id="cableShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="1.5" dy="2.5" stdDeviation="1.5" flood-color="#000" flood-opacity=".48"/>
+            </filter>
+          </defs>
+          <g id="wirePaths"></g>
+        </svg>
+
+        <section class="led-module" aria-labelledby="inputs-heading">
+          <div class="pcb-traces" aria-hidden="true"></div>
+          <div class="led-title"><span>01</span> <h2 id="inputs-heading">INPUT</h2></div>
+          <p class="led-caption">PRESS A LIGHT / x<sub>1…16</sub></p>
+          <div class="led-grid" id="ledGrid" role="group" aria-label="Input lights"></div>
+          <span class="pcb-label">INPUT / GRID</span>
+        </section>
+
+        <section class="machine-panel weight-panel" aria-labelledby="weights-heading">
+          <div class="panel-header"><span>02</span><h2 id="weights-heading">Synaptic weights</h2></div>
+          <p class="panel-caption">Click any dial to type an exact value</p>
+          <div class="knob-grid" id="knobGrid"></div>
+          <div class="bias-row">
+            <span class="bias-line"></span>
+            <div class="bias-label"><b>BIAS</b><small>threshold offset</small></div>
+            <div id="biasMount"></div>
+            <span class="bias-line"></span>
+          </div>
+        </section>
+
+        <section class="compute-module" aria-labelledby="compute-heading">
+          <div class="compute-header">
+            <span class="compute-index">Σ</span>
+            <div><h2 id="compute-heading">CALCULATION</h2><small>SUM / BIAS / STEP</small></div>
+            <span class="compute-status" id="circuitLed" aria-hidden="true"></span>
+          </div>
+          <div class="digital-screen" aria-live="polite" aria-atomic="true">
+            <div class="digital-row"><span>WEIGHTED SUM</span><strong id="moduleWeightedSum">+28.00</strong></div>
+            <div class="digital-row"><span>BIAS</span><strong id="moduleBias">−22.00</strong></div>
+            <div class="digital-divider"></div>
+            <div class="digital-row primary"><span>FINAL VALUE z</span><strong id="moduleFinalZ">+6.00</strong></div>
+            <div class="digital-row activation"><span>ACTIVATION H(z)</span><strong id="moduleActivation">1</strong></div>
+          </div>
+          <div class="compute-flow"><span>Σ xᵢwᵢ</span><b>+</b><span>b</span><b>→</b><span>H(z)</span></div>
+        </section>
+
+        <section class="meter-module" aria-labelledby="output-heading">
+          <div class="meter-label"><span>03</span><h2 id="output-heading">Output</h2></div>
+          <div class="meter-case">
+            <div class="meter-face">
+              <svg viewBox="0 0 300 175" role="img" aria-label="Analog response meter">
+                <defs><filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-opacity=".4"/></filter></defs>
+                <path d="M30 145 A120 120 0 0 1 270 145" class="meter-arc"/>
+                <g id="meterTicks"></g>
+                <text x="150" y="60" text-anchor="middle" class="meter-zero">RESPONSE</text>
+                <text x="150" y="83" text-anchor="middle" class="meter-unit">NORMALIZED</text>
+                <text x="150" y="110" text-anchor="middle" class="meter-brand">PERCEPTRON</text>
+                <g id="needleGroup" transform="rotate(-60 150 145)" filter="url(#shadow)">
+                  <path d="M150 148 L146 143 L150 25 L154 143 Z" class="needle"/>
+                </g>
+                <circle cx="150" cy="145" r="14" class="needle-hub"/>
+              </svg>
+              <div class="meter-numbers"><span>0</span><span>50</span><span>100</span></div>
+            </div>
+            <div class="meter-base"><span></span><span></span></div>
+          </div>
+          <div class="result-lamp-row">
+            <span class="result-lamp" id="resultLamp"></span>
+            <div><small>CLASSIFICATION</small><strong id="classificationText">MATCH</strong></div>
+          </div>
+        </section>
+      </div>
+
+      <ol class="sticky-notes" aria-label="Getting started">
+        <li class="sticky-note"><span class="sticky-number">1</span><p><strong>Set the pattern.</strong> Press the sixteen input lights to turn pixels on or off.</p></li>
+        <li class="sticky-note"><span class="sticky-number">2</span><p><strong>Edit exact weights.</strong> Click a dial, type a number, and press Enter. No dragging required.</p></li>
+        <li class="sticky-note"><span class="sticky-number">3</span><p><strong>Read the decision.</strong> A score of zero or more produces output 1; a negative score produces 0.</p></li>
+        <li class="sticky-note"><span class="sticky-number">4</span><p><strong>Teach by correction.</strong> Label the current pattern; weights update only when the machine is wrong.</p></li>
+      </ol>
+    </section>
+
+    <section class="console" aria-label="Perceptron controls and readout">
+      <article class="readout-card">
+        <div class="card-kicker">LIVE CALCULATION</div>
+        <div class="formula"><span>z</span> = Σ (x<sub>i</sub> · w<sub>i</sub>) + b</div>
+        <div class="score-row">
+          <div><small>ACTIVE INPUTS</small><strong id="activeCount">7 / 16</strong></div>
+          <div><small>WEIGHTED SUM</small><strong id="weightedSum">28.00</strong></div>
+          <div class="score-primary"><small>FINAL SCORE z</small><strong id="finalScore">6.00</strong></div>
+          <div><small>STEP OUTPUT ŷ</small><strong id="binaryOutput">1</strong></div>
+        </div>
+        <p id="equationDetail" class="equation-detail">28.00 + (−22.00) = 6.00 → z ≥ 0</p>
+      </article>
+
+      <article class="control-card">
+        <div class="card-kicker">PATTERN &amp; TRAINING</div>
+        <div class="button-row">
+          <button class="btn btn-primary" id="loadLBtn"><span>⌁</span> Load “L” preset</button>
+          <button class="btn" id="noiseBtn">Add noise</button>
+          <button class="btn" id="clearBtn">Clear grid</button>
+          <button class="btn" id="resetBtn">Reset all</button>
+        </div>
+        <div class="training-row">
+          <label>Learning rate <input id="learningRate" type="number" min="0.01" max="10" step="0.1" value="1" /></label>
+          <button class="teach positive" id="teachYesBtn"><span>+</span> Teach: this is a match</button>
+          <button class="teach negative" id="teachNoBtn"><span>−</span> Teach: not a match</button>
+        </div>
+        <div class="status-line" id="statusLine" role="status" aria-live="polite">L-recognizer preset loaded. Press an input light or edit a dial.</div>
+      </article>
+    </section>
+
+  </main>
+
+  <div class="dial-editor" id="dialEditor" hidden>
+    <div class="editor-pointer"></div>
+    <label id="editorLabel" for="dialInput">WEIGHT 01</label>
+    <div class="editor-input-row">
+      <button id="decrementBtn" aria-label="Decrease value">−</button>
+      <input id="dialInput" type="number" min="-30" max="30" step="0.1" inputmode="decimal" />
+      <button id="incrementBtn" aria-label="Increase value">+</button>
+    </div>
+    <div class="editor-actions"><button id="cancelEdit">Cancel</button><button id="applyEdit">Apply</button></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="embed.js"></script>
+</body>
+</html>

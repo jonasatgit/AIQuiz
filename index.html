@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#161b19">
-  <meta name="description" content="A quiz to help you understand AI concepts.">
+  <meta name="description" content="Explore AI concepts with a quiz and interactive demonstrations.">
   <title>AI Quiz</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=larger-network">
+  <link rel="stylesheet" href="styles.css?v=demo-tabs">
   <script src="questions.js" defer></script>
   <script src="app.js?v=quiz-tabs" defer></script>
   <script src="arcade.js?v=hidden-games" defer></script>
+  <script src="demo-frames.js" defer></script>
 </head>
 <body>
   <div class="page-shell">
@@ -81,15 +82,11 @@
           </aside>
         </div>
       </section>
-      <section class="coming-soon" id="panel-perceptron" role="tabpanel" aria-labelledby="tab-perceptron" tabindex="0" hidden>
-        <span class="eyebrow">COMING SOON</span>
-        <h1>Perceptron</h1>
-        <p>More about perceptrons is on its way.</p>
+      <section class="demo-panel" id="panel-perceptron" role="tabpanel" aria-labelledby="tab-perceptron" tabindex="0" hidden>
+        <iframe title="Interactive perceptron laboratory" data-src="demos/index.html"></iframe>
       </section>
-      <section class="coming-soon" id="panel-llm" role="tabpanel" aria-labelledby="tab-llm" tabindex="0" hidden>
-        <span class="eyebrow">COMING SOON</span>
-        <h1>LLM</h1>
-        <p>More about large language models is on its way.</p>
+      <section class="demo-panel" id="panel-llm" role="tabpanel" aria-labelledby="tab-llm" tabindex="0" hidden>
+        <iframe title="Interactive LLM walkthrough" data-src="demos/llm.html"></iframe>
       </section>
     </main>
     <footer class="site-footer" id="site-footer">

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Follow an animated next-token prediction through a tiny decoder-only transformer." />
+  <title>LLM | Perceptron Laboratory</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="llm.css" />
+  <script src="llm.js" defer></script>
+  <script src="embed.js" defer></script>
+</head>
+<body class="llm-page">
+  <main class="site-shell">
+    <header class="llm-hero">
+      <div class="llm-kicker">02 / Language laboratory</div>
+      <h1>How an LLM predicts <span>the next token</span></h1>
+      <p>Follow one prediction from left to right, like the signal in the perceptron. This tiny transformer runs in your browser with a fixed vocabulary and untrained weights. Its numbers are real; its text is not meant to be realistic.</p>
+    </header>
+
+    <section class="llm-bench" aria-labelledby="bench-heading">
+      <div class="llm-bench-head">
+        <div>
+          <div class="llm-kicker">Decoder-only transformer / forward pass</div>
+          <h2 id="bench-heading">Signal path</h2>
+        </div>
+        <label class="llm-prompt">Example prompt
+          <select id="llm-prompt">
+            <option value="the sky is">the sky is</option>
+            <option value="the sky is blue">the sky is blue</option>
+            <option value="the sky is gray today">the sky is gray today</option>
+          </select>
+        </label>
+      </div>
+      <div class="llm-transport" aria-label="Playback controls">
+        <button type="button" class="llm-primary" id="llm-play">Play flow</button>
+        <button type="button" id="llm-prev">Previous</button>
+        <button type="button" id="llm-next">Next step</button>
+        <button type="button" id="llm-reset">Reset</button>
+        <span id="llm-progress" role="status"></span>
+      </div>
+      <p class="llm-rail-hint">Read left to right. Select any module to inspect it. On narrow screens, scroll the signal path sideways or use the step buttons.</p>
+      <div class="llm-scroll" id="llm-scroll">
+        <ol class="llm-flow" id="llm-flow" aria-label="Prediction stages">
+          <li><button type="button" data-step="0" aria-pressed="true"><span class="llm-stage-num">01 / IN</span><strong>Input</strong><small>Text to token IDs</small></button></li>
+          <li><button type="button" data-step="1" aria-pressed="false"><span class="llm-stage-num">02 / ENCODE</span><strong>Embedding</strong><small>Token + position</small></button></li>
+          <li><button type="button" data-step="2" aria-pressed="false"><span class="llm-stage-num">03 / MIX</span><strong>Transformer</strong><small>Attention + MLP × 2</small></button></li>
+          <li><button type="button" data-step="3" aria-pressed="false"><span class="llm-stage-num">04 / SCORE</span><strong>Projection</strong><small>Final norm + linear</small></button></li>
+          <li><button type="button" data-step="4" aria-pressed="false"><span class="llm-stage-num">05 / SCALE</span><strong>Softmax</strong><small>Scores to probabilities</small></button></li>
+          <li><button type="button" data-step="5" aria-pressed="false"><span class="llm-stage-num">06 / OUT</span><strong>Output</strong><small>Next token + repeat</small></button></li>
+        </ol>
+      </div>
+      <div class="llm-inspector">
+        <div class="llm-explanation">
+          <div class="llm-kicker" id="llm-step-label">Step 01 / 06</div>
+          <h3 id="llm-step-title">Turn text into token IDs</h3>
+          <p id="llm-step-detail"></p>
+          <p class="llm-comparison"><strong>Perceptron parallel</strong> <span id="llm-parallel"></span></p>
+        </div>
+        <div class="llm-signal" id="llm-signal" role="region" aria-labelledby="llm-trace-label">
+          <div class="llm-kicker" id="llm-trace-label">Signal trace</div>
+          <div id="llm-block" hidden>
+            <label>Transformer block <select id="llm-block-number"><option value="0">Block 1</option><option value="1" selected>Block 2</option></select></label>
+            <p class="llm-block-hint">A bypass carries the original vector around each branch to the residual add.</p>
+            <div class="llm-block-flow" role="group" aria-label="Transformer operations">
+            <div class="llm-branch">
+              <div><button type="button" data-operation="0">Norm</button><button type="button" data-operation="1">Causal attention</button><button type="button" data-operation="2">Add</button></div>
+              <span class="llm-bypass">Residual bypass →</span>
+            </div>
+            <div class="llm-branch">
+              <div><button type="button" data-operation="3">Norm</button><button type="button" data-operation="4">MLP · ReLU</button><button type="button" data-operation="5">Add</button></div>
+              <span class="llm-bypass">Residual bypass →</span>
+            </div>
+            </div>
+          </div>
+          <div id="llm-trace"></div>
+          <div id="llm-attention" hidden>
+            <p class="llm-block-hint">Each head assigns weights to the current and earlier positions. Future positions are masked, so they get zero weight.</p>
+            <label>Inspect query position <select id="llm-query"></select></label>
+            <div id="llm-weights"></div>
+          </div>
+          <button type="button" id="llm-append" hidden>Append token and replay</button>
+          <p id="llm-limit" hidden>Demo limit reached (12 tokens). Reset to start again.</p>
+        </div>
+      </div>
+    </section>
+    <aside class="llm-reference">
+      <strong>Same idea, different scale.</strong> The perceptron gives one weighted score and thresholds it. The transformer repeatedly mixes context and gives every vocabulary token a score. Architecture reference: <a href="https://bbycroft.net/llm">Brendan Bycroft’s LLM Visualization</a>.
+    </aside>
+  </main>
+</body>
+</html>

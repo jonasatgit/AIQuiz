@@ -13,7 +13,9 @@ This website and its code were created with AI assistance. The content is educat
 - Wrong answers reset the streak without subtracting points. There is no timer.
 - Personal bests are saved per playlist in this browser's local storage after a completed run. They are not synced or a secure competitive leaderboard.
 - Two hidden buttons sit at the left and right edges of the neuron animation above the quiz. The left starts an all-questions run, independent of the selected playlist; the right starts Neuron Run immediately. They are also reachable by keyboard. An all-questions run has a separate personal best for each question-bank size.
-- The Perceptron and LLM tabs are coming-soon placeholders. Switching tabs preserves the current quiz.
+- The Perceptron tab contains an interactive 4×4 classifier: toggle inputs, edit weights and bias, and teach it by correction.
+- The LLM tab walks through a next-token prediction in a tiny decoder-only transformer with fixed, untrained weights. It is an educational demonstration, not a chatbot.
+- The demos are isolated from the quiz and each other. Switching tabs preserves their state and the current quiz; LLM playback pauses when its tab is hidden.
 - The searchable field guide contains all 45 concepts.
 - Dark mode follows your device setting until you use the header toggle. Your selected theme is saved in this browser.
 - Every completed quiz, including a zero-point run, offers **Neuron Run**, an optional platform game. Pilot a little AI robot across three layers of moving neurons. Use the arrow keys or A/D to move and Space, W, or Up to jump. With touch, hold a direction and tap Jump. With a mouse, move, release the direction, and click Jump to carry that direction through the air.
@@ -24,5 +26,7 @@ This website and its code were created with AI assistance. The content is educat
 ## Customize
 
 Edit `questions.js` for quiz content and `styles.css` for the design. Keep at least ten questions per category, four answer options per question, and a zero-based `correct` index. Category rounds sample ten questions at random. The mixed playlist references four question IDs directly.
+
+The standalone demo assets are in `demos/`; they are loaded only when their tab is opened. The LLM walkthrough references [Brendan Bycroft’s LLM Visualization](https://bbycroft.net/llm).
 
 
