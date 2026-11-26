@@ -275,6 +275,12 @@
   });
   $("glossary-search").addEventListener("input", (event) => renderGlossary(event.target.value));
   $("rules-open").addEventListener("click", () => $("rules-dialog").showModal());
+  $("site-footer").addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") $("footer-about").open = true;
+  });
+  $("site-footer").addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "mouse" && !$("footer-about").contains(document.activeElement)) $("footer-about").open = false;
+  });
   document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => $(button.dataset.close).close()));
   document.querySelectorAll("dialog").forEach(dialog => dialog.addEventListener("click", (event) => {
     if (event.target !== dialog) return;
