@@ -8,10 +8,10 @@
   <title>AI Quiz</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=readable-quiz">
+  <link rel="stylesheet" href="styles.css?v=hidden-games">
   <script src="questions.js" defer></script>
-  <script src="app.js?v=compact-quiz" defer></script>
-  <script src="arcade.js?v=robot-run" defer></script>
+  <script src="app.js?v=hidden-games" defer></script>
+  <script src="arcade.js?v=hidden-games" defer></script>
 </head>
 <body>
   <div class="page-shell">
@@ -20,8 +20,10 @@
         <a class="brand" href="./" aria-label="AI Quiz home"><svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 24 11 10M24 24 38 11M24 24 10 36M24 24 37 37M24 24V7M24 24v17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="currentColor"/><circle cx="11" cy="10" r="3" fill="currentColor"/><circle cx="38" cy="11" r="3" fill="currentColor"/><circle cx="10" cy="36" r="3" fill="currentColor"/><circle cx="37" cy="37" r="3" fill="currentColor"/><circle cx="24" cy="6" r="2" fill="currentColor"/><circle cx="24" cy="42" r="2" fill="currentColor"/></svg> AI Quiz</a>
         <h1 class="header-tagline">Make a little <span class="serif-word">sense</span> of AI<span class="lime-period">.</span></h1>
       </div>
-      <div class="neural-art" aria-hidden="true">
-        <svg id="neural-network" viewBox="0 0 620 150"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
+      <div class="neural-art">
+        <button class="network-secret network-secret-left" id="all-questions-open" type="button" aria-label="Play all questions" title="Play all questions">↗</button>
+        <svg id="neural-network" viewBox="0 0 620 150" aria-hidden="true"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
+        <button class="network-secret network-secret-right" id="bonus-secret-open" type="button" aria-label="Play Neuron Run" title="Play Neuron Run">↗</button>
       </div>
       <nav class="header-actions" aria-label="Page links and settings">
         <a class="github-link" href="https://github.com/jonasatgit/AIQuiz">GitHub <span aria-hidden="true">↗</span></a>
@@ -34,7 +36,7 @@
       <section class="arcade" aria-labelledby="arcade-title">
         <div class="section-top">
           <h2 id="arcade-title" class="sr-only">Quiz</h2>
-          <div class="mode-wrap"><label for="mode">YOUR PLAYLIST</label><select id="mode"><option value="mixed">Mixed signals</option><option value="foundations">The foundations</option><option value="mechanics">Inside the model</option><option value="language">Language &amp; trust</option></select></div>
+          <div class="mode-wrap"><label for="mode">YOUR PLAYLIST</label><select id="mode"><option value="mixed">Mixed signals</option><option value="foundations">The foundations</option><option value="mechanics">Inside the model</option><option value="language">Language &amp; trust</option><option value="all" hidden>All questions</option></select></div>
         </div>
         <div class="game-layout">
           <div class="quiz-panel" id="quiz-panel">
@@ -51,9 +53,9 @@
               <div class="quiz-bottom" id="quiz-bottom" hidden><button class="next-button" id="next-button" hidden>Next question <span aria-hidden="true">↗</span></button></div>
             </div>
             <div id="result-view" hidden>
-              <div class="result-symbol" aria-hidden="true">✳</div><div class="eyebrow">TEN QUESTIONS. NEW CONNECTIONS.</div>
+              <div class="result-symbol" aria-hidden="true">✳</div><div class="eyebrow" id="result-eyebrow">TEN QUESTIONS. NEW CONNECTIONS.</div>
               <h3 id="result-title">A brighter mind.</h3><p id="result-message"></p>
-              <div class="result-score"><span id="final-score">0</span><span>/ 1,750 POINTS</span></div>
+              <div class="result-score"><span id="final-score">0</span><span id="maximum-score">/ 1,750 POINTS</span></div>
               <div class="result-stats"><span><strong id="final-correct"></strong> correct</span><span><strong id="final-streak"></strong> best streak</span></div>
               <p id="record-message"></p>
               <div class="result-actions"><button class="primary-button" id="play-again">Make more connections ↗</button><button class="text-button" id="share-result">Copy result</button></div>
@@ -70,7 +72,7 @@
               <div class="score-number"><span id="score">0</span><span>PTS</span></div>
               <div class="streak-display"><span aria-hidden="true">ϟ</span><strong id="streak">0</strong><span>answer streak</span><span class="streak-dots" id="streak-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
               <div class="personal-best"><span>⌁ &nbsp; Personal best</span><strong id="personal-best">0</strong></div>
-              <span class="best-caption">This playlist</span>
+              <span class="best-caption" id="best-caption">This playlist</span>
             </div>
             <div class="how-card"><h3>Scoring</h3><p>Correct answer: <strong>+100 points.</strong><br>Streak bonus: <strong>up to +100 extra.</strong></p><div class="no-timer"><span aria-hidden="true">◷</span> No timer.</div><button id="rules-open" class="text-button">How points work <span aria-hidden="true">↗</span></button></div>
           </aside>

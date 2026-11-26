@@ -9,9 +9,10 @@ This website and its code were created with AI assistance. The content is educat
 - Mixed rounds always include bias, parameter, transformer, and perceptron, plus six other concepts.
 - Question order and answer order change on every run.
 - Each answer reveals the correct option, an explanation, and an everyday analogy.
-- Correct answers earn 100 points, plus a streak bonus of 25, 50, 75, then 100 points. Maximum: **1,750 points per run**.
+- Correct answers earn 100 points, plus a streak bonus of 25, 50, 75, then 100 points. Maximum: **1,750 points per 10-question run**; longer runs continue at up to 200 points per question.
 - Wrong answers reset the streak without subtracting points. There is no timer.
 - Personal bests are saved per playlist in this browser's local storage after a completed run. They are not synced or a secure competitive leaderboard.
+- Two hidden buttons sit at the left and right edges of the header's neuron animation. The left starts an all-questions run, independent of the selected playlist; the right starts Neuron Run immediately. They are also reachable by keyboard. An all-questions run has a separate personal best for each question-bank size.
 - The searchable field guide contains all 45 concepts.
 - Dark mode follows your device setting until you use the header toggle. Your selected theme is saved in this browser.
 - Every completed quiz, including a zero-point run, offers **Neuron Run**, an optional platform game. Pilot a little AI robot across three layers of moving neurons. Use the arrow keys or A/D to move and Space, W, or Up to jump. With touch, hold a direction and tap Jump. With a mouse, move, release the direction, and click Jump to carry that direction through the air.

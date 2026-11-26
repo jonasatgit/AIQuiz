@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
-  const categories = { foundations: "The foundations", mechanics: "Inside the model", language: "Language & trust", mixed: "Mixed signals" };
+  const categories = { foundations: "The foundations", mechanics: "Inside the model", language: "Language & trust", mixed: "Mixed signals", all: "All questions" };
   const storageKey = "synapse-bests-v1";
   const state = { mode: "mixed", questions: [], index: 0, score: 0, streak: 0, maxStreak: 0, correct: 0, answered: false, finished: false, previousBest: 0 };
   let bests = {};
@@ -11,7 +11,13 @@
     const stored = JSON.parse(localStorage.getItem(storageKey) || "{}");
     if (stored && typeof stored === "object" && !Array.isArray(stored)) {
       for (const mode of Object.keys(categories)) {
-        if (Number.isInteger(stored[mode]) && stored[mode] >= 0 && stored[mode] <= 1750) bests[mode] = stored[mode];
+        if (mode !== "all" && Number.isInteger(stored[mode]) && stored[mode] >= 0 && stored[mode] <= maximumScore(10)) bests[mode] = stored[mode];
+      }
+      for (const [key, value] of Object.entries(stored)) {
+        const match = /^all-(\d+)$/.exec(key);
+        if (!match) continue;
+        const count = Number(match[1]);
+        if (Number.isSafeInteger(count) && count > 0 && Number.isSafeInteger(value) && value >= 0 && value <= maximumScore(count)) bests[key] = value;
       }
     }
   } catch (error) {
@@ -32,13 +38,21 @@
     }
     return result;
   }
+  function bestKey(mode) {
+    return mode === "all" ? `all-${QUESTIONS.length}` : mode;
+  }
+  function maximumScore(count) {
+    return count <= 5 ? count * 100 + 25 * count * (count - 1) / 2 : 750 + (count - 5) * 200;
+  }
   function makeRound(mode) {
     let selected;
-    if (mode === "mixed") {
+    if (mode === "all") {
+      selected = shuffled(QUESTIONS);
+    } else if (mode === "mixed") {
       const core = ["bias", "parameter", "transformer", "perceptron"];
       selected = shuffled([...QUESTIONS.filter(q => core.includes(q.id)), ...shuffled(QUESTIONS.filter(q => !core.includes(q.id))).slice(0, 6)]);
     } else {
-      selected = shuffled(QUESTIONS.filter(q => q.category === mode));
+      selected = shuffled(QUESTIONS.filter(q => q.category === mode)).slice(0, 10);
     }
     return selected.map(question => {
       const options = shuffled(question.answers.map((text, index) => ({ text, correct: index === question.correct })));
@@ -46,8 +60,10 @@
     });
   }
   function startRound(mode, focus = false) {
-    Object.assign(state, { mode, questions: makeRound(mode), index: 0, score: 0, streak: 0, maxStreak: 0, correct: 0, answered: false, finished: false, previousBest: bests[mode] || 0 });
+    Object.assign(state, { mode, questions: makeRound(mode), index: 0, score: 0, streak: 0, maxStreak: 0, correct: 0, answered: false, finished: false, previousBest: bests[bestKey(mode)] || 0 });
     $("mode").value = mode;
+    $("progress").setAttribute("aria-valuemax", state.questions.length);
+    $("best-caption").textContent = mode === "all" ? "All questions" : "This playlist";
     $("question-view").hidden = false;
     $("result-view").hidden = true;
     $("share-status").textContent = "";
@@ -57,22 +73,22 @@
   function updateScore() {
     $("score").textContent = state.score.toLocaleString("en-US");
     $("streak").textContent = state.streak;
-    $("personal-best").textContent = (bests[state.mode] || 0).toLocaleString("en-US");
+    $("personal-best").textContent = (bests[bestKey(state.mode)] || 0).toLocaleString("en-US");
     [...$("streak-dots").children].forEach((dot, i) => dot.classList.toggle("active", i < state.streak));
   }
   function renderQuestion(focus) {
     const question = state.questions[state.index];
     state.answered = false;
     $("question-view").classList.remove("answered");
-    $("question-counter").textContent = `QUESTION ${String(state.index + 1).padStart(2, "0")} / 10`;
+    $("question-counter").textContent = `QUESTION ${String(state.index + 1).padStart(2, "0")} / ${state.questions.length}`;
     $("topic-pill").textContent = categories[question.category].toUpperCase();
-    $("progress-fill").style.width = `${state.index * 10}%`;
+    $("progress-fill").style.width = `${state.index / state.questions.length * 100}%`;
     $("progress").setAttribute("aria-valuenow", state.index);
     $("question-title").textContent = question.prompt;
     $("explanation").hidden = true;
     $("quiz-bottom").hidden = true;
     $("next-button").hidden = true;
-    $("next-button").innerHTML = `${state.index === 9 ? "See my results" : "Next question"} <span aria-hidden="true">↗</span>`;
+    $("next-button").innerHTML = `${state.index === state.questions.length - 1 ? "See my results" : "Next question"} <span aria-hidden="true">↗</span>`;
     $("answers").replaceChildren();
     question.options.forEach((option, i) => {
       const button = document.createElement("button");
@@ -132,7 +148,7 @@
     $("quiz-bottom").hidden = false;
     $("next-button").hidden = false;
     $("question-view").classList.add("answered");
-    $("progress-fill").style.width = `${(state.index + 1) * 10}%`;
+    $("progress-fill").style.width = `${(state.index + 1) / state.questions.length * 100}%`;
     $("progress").setAttribute("aria-valuenow", state.index + 1);
     updateScore();
     $("score").classList.remove("score-pop");
@@ -143,8 +159,9 @@
     $("explanation").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "nearest" });
   }
   function saveBest() {
-    if (state.score <= (bests[state.mode] || 0)) return;
-    bests[state.mode] = state.score;
+    const key = bestKey(state.mode);
+    if (state.score <= (bests[key] || 0)) return;
+    bests[key] = state.score;
     if (!storageAvailable) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify(bests));
@@ -155,6 +172,9 @@
     }
   }
   function finish() {
+    const count = state.questions.length;
+    const maxScore = maximumScore(count);
+    const strongResult = state.correct / count >= .7;
     state.finished = true;
     saveBest();
     updateScore();
@@ -162,15 +182,17 @@
     $("result-view").hidden = false;
     $("question-counter").textContent = "SESSION COMPLETE";
     $("topic-pill").textContent = categories[state.mode].toUpperCase();
-    $("result-title").textContent = state.correct === 10 ? "Perfectly connected." : state.correct >= 7 ? "Look at those connections." : "A brighter mind.";
-    $("result-message").textContent = state.correct >= 7 ? "The jargon is getting less mysterious. Take another lap and see how far your curiosity goes." : "Every explanation is a step forward. Give it another go: the best way to learn is to keep connecting.";
+    $("result-eyebrow").textContent = state.mode === "all" ? `${count} QUESTIONS. NEW CONNECTIONS.` : "TEN QUESTIONS. NEW CONNECTIONS.";
+    $("result-title").textContent = state.correct === count ? "Perfectly connected." : strongResult ? "Look at those connections." : "A brighter mind.";
+    $("result-message").textContent = strongResult ? "The jargon is getting less mysterious. Take another lap and see how far your curiosity goes." : "Every explanation is a step forward. Give it another go: the best way to learn is to keep connecting.";
     $("final-score").textContent = state.score.toLocaleString("en-US");
-    $("final-correct").textContent = `${state.correct}/10`;
+    $("maximum-score").textContent = `/ ${maxScore.toLocaleString("en-US")} POINTS`;
+    $("final-correct").textContent = `${state.correct}/${count}`;
     $("final-streak").textContent = state.maxStreak;
-    $("record-message").textContent = state.score > state.previousBest ? "A new personal best. That's your curiosity paying off." : state.score === 1750 ? "The highest possible score. Beautifully done." : `Your next summit: ${(bests[state.mode] || 0).toLocaleString("en-US")} points.`;
+    $("record-message").textContent = state.score > state.previousBest ? "A new personal best. That's your curiosity paying off." : state.score === maxScore ? "The highest possible score. Beautifully done." : `Your next summit: ${(bests[bestKey(state.mode)] || 0).toLocaleString("en-US")} points.`;
     $("result-title").tabIndex = -1;
     $("result-title").focus({ preventScroll: true });
-    $("announcer").textContent = `Quiz complete. ${state.score} points. ${state.correct} of 10 correct. Best streak ${state.maxStreak}.`;
+    $("announcer").textContent = `Quiz complete. ${state.score} points. ${state.correct} of ${count} correct. Best streak ${state.maxStreak}.`;
     celebrate();
   }
   function celebrate() {
@@ -188,7 +210,7 @@
   }
   $("next-button").addEventListener("click", () => {
     if (!state.answered || state.finished) return;
-    if (state.index === 9) finish();
+    if (state.index === state.questions.length - 1) finish();
     else {
       state.index++;
       renderQuestion(true);
@@ -196,14 +218,17 @@
     }
   });
   $("play-again").addEventListener("click", () => startRound(state.mode, true));
-  $("mode").addEventListener("change", (event) => {
-    const mode = event.target.value;
+  function requestRound(mode) {
     if (!state.finished && (state.index > 0 || state.answered)) {
       pendingMode = mode;
       $("mode").value = state.mode;
+      $("switch-title").textContent = mode === "all" ? "Play all questions?" : "Try a different playlist?";
+      $("confirm-switch").textContent = mode === "all" ? "Start all questions" : "Switch playlist";
       $("switch-dialog").showModal();
     } else startRound(mode, true);
-  });
+  }
+  $("mode").addEventListener("change", (event) => requestRound(event.target.value));
+  $("all-questions-open").addEventListener("click", () => requestRound("all"));
   $("confirm-switch").addEventListener("click", () => {
     const mode = pendingMode;
     pendingMode = null;
@@ -213,7 +238,7 @@
   $("cancel-switch").addEventListener("click", () => $("switch-dialog").close());
   $("switch-dialog").addEventListener("close", () => { pendingMode = null; });
   $("share-result").addEventListener("click", async () => {
-    const text = `I scored ${state.score.toLocaleString("en-US")}/1,750 on AI Quiz (${categories[state.mode]})! ${state.correct}/10 correct, best streak: ${state.maxStreak}. Make a little sense of AI.`;
+    const text = `I scored ${state.score.toLocaleString("en-US")}/${maximumScore(state.questions.length).toLocaleString("en-US")} on AI Quiz (${categories[state.mode]})! ${state.correct}/${state.questions.length} correct, best streak: ${state.maxStreak}. Make a little sense of AI.`;
     try {
       await navigator.clipboard.writeText(text);
       $("share-status").textContent = "Result copied. Share a little curiosity.";

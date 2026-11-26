@@ -585,18 +585,21 @@
       ctx.textAlign = "start";
     }
   }
-  $("bonus-open").addEventListener("click", () => {
+  function openBonus(startImmediately = false) {
     prepare();
     dialog.showModal();
-    resizeCanvas();
     if (!ctx) {
       $("bonus-overlay-copy").textContent = "Your browser does not support canvas games.";
       $("bonus-start").disabled = true;
       console.error("AI Quiz could not initialize the bonus game: canvas is unavailable.");
     } else {
-      $("bonus-start").focus();
+      resizeCanvas();
+      if (startImmediately) start();
+      else $("bonus-start").focus();
     }
-  });
+  }
+  $("bonus-open").addEventListener("click", () => openBonus());
+  $("bonus-secret-open").addEventListener("click", () => openBonus(true));
   $("bonus-start").addEventListener("click", start);
   $("bonus-pause").addEventListener("click", () => {
     if (game.phase === "running") pause();

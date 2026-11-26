@@ -114,6 +114,10 @@ dialog{border:1px solid #d3d9c6;border-radius:13px;background:var(--paper);color
 :root[data-theme="dark"] .github-link:hover{background:#343b45}
 .site-header{height:88px}
 .site-header .neural-art{position:relative;inset:auto;flex:1 1 200px;min-width:80px;max-width:330px;height:76px;margin:0 auto;opacity:1;pointer-events:none}
+.network-secret{position:absolute;top:50%;z-index:2;width:44px;height:44px;transform:translateY(-50%);border-radius:50%;background:transparent;color:transparent;pointer-events:auto}
+.network-secret-left{left:0}
+.network-secret-right{right:0}
+.network-secret:hover,.network-secret:focus-visible{color:var(--ink);background:var(--paper);outline-offset:-3px}
 body{min-height:100vh;min-height:100dvh}
 .section-top{margin:7px 0}
 .quiz-panel{min-height:0;padding:20px 28px}
