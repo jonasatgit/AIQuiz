@@ -51,7 +51,7 @@
       };
     };
     const mobile = window.matchMedia('(max-width: 680px)').matches;
-    const stacked = window.matchMedia('(max-width: 1350px)').matches;
+    const stacked = window.matchMedia('(max-width: 1300px)').matches;
     const cableRuns = [
       { from: '.led-module', to: '.weight-panel', start: .52, end: .2 },
       { from: '.weight-panel', to: '.compute-module', start: .85, end: .5 },
@@ -199,8 +199,8 @@
     if (left + width > window.innerWidth - 12) left = window.innerWidth - width - 12;
     if (left < 12) left = 12;
     if (top + 150 > window.innerHeight) top = rect.top - 155;
-    editor.style.left = `${left}px`;
-    editor.style.top = `${top}px`;
+    editor.style.left = `${left + window.scrollX}px`;
+    editor.style.top = `${top + window.scrollY}px`;
     requestAnimationFrame(() => { dialInput.focus(); dialInput.select(); });
   }
 
