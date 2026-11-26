@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#161b19">
+  <meta name="description" content="A quiz to help you understand AI concepts.">
+  <title>AI Quiz</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=robot-run">
+  <script src="questions.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="arcade.js?v=robot-run" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="AI Quiz home"><svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 24 11 10M24 24 38 11M24 24 10 36M24 24 37 37M24 24V7M24 24v17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="currentColor"/><circle cx="11" cy="10" r="3" fill="currentColor"/><circle cx="38" cy="11" r="3" fill="currentColor"/><circle cx="10" cy="36" r="3" fill="currentColor"/><circle cx="37" cy="37" r="3" fill="currentColor"/><circle cx="24" cy="6" r="2" fill="currentColor"/><circle cx="24" cy="42" r="2" fill="currentColor"/></svg> AI Quiz</a>
+      <button class="text-button" id="glossary-open">The field guide <span aria-hidden="true">↗</span></button>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" title="Toggle dark mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Dark mode</span></button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">Make a little<br><span class="serif-word">sense</span> of AI<span class="lime-period">.</span></h1>
+        </div>
+        <div class="neural-art" aria-hidden="true">
+          <svg id="neural-network" viewBox="0 0 480 340"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
+        </div>
+      </section>
+
+      <section class="arcade" aria-labelledby="arcade-title">
+        <div class="section-top">
+          <h2 id="arcade-title" class="sr-only">Quiz</h2>
+          <div class="mode-wrap"><label for="mode">YOUR PLAYLIST</label><select id="mode"><option value="mixed">Mixed signals</option><option value="foundations">The foundations</option><option value="mechanics">Inside the model</option><option value="language">Language &amp; trust</option></select></div>
+        </div>
+        <div class="game-layout">
+          <div class="quiz-panel" id="quiz-panel">
+            <div class="quiz-top"><span id="question-counter">QUESTION 01 / 10</span><span class="topic-pill" id="topic-pill">THE FOUNDATIONS</span></div>
+            <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress"><div id="progress-fill"></div></div>
+            <div id="question-view">
+              <h3 id="question-title" tabindex="-1"></h3>
+              <div class="answers" id="answers" role="group" aria-labelledby="question-title"></div>
+              <div id="explanation" class="explanation" hidden role="region" aria-label="Answer explanation">
+                <div class="explanation-heading"><span id="answer-verdict"></span><span id="points-earned"></span></div>
+                <p id="explanation-text"></p>
+                <div class="analogy"><span>THINK OF IT THIS WAY</span><p id="analogy-text"></p></div>
+              </div>
+              <div class="quiz-bottom" id="quiz-bottom" hidden><button class="next-button" id="next-button" hidden>Next question <span aria-hidden="true">↗</span></button></div>
+            </div>
+            <div id="result-view" hidden>
+              <div class="result-symbol" aria-hidden="true">✳</div><div class="eyebrow">TEN QUESTIONS. NEW CONNECTIONS.</div>
+              <h3 id="result-title">A brighter mind.</h3><p id="result-message"></p>
+              <div class="result-score"><span id="final-score">0</span><span>/ 1,750 POINTS</span></div>
+              <div class="result-stats"><span><strong id="final-correct"></strong> correct</span><span><strong id="final-streak"></strong> best streak</span></div>
+              <p id="record-message"></p>
+              <div class="result-actions"><button class="primary-button" id="play-again">Make more connections ↗</button><button class="text-button" id="share-result">Copy result</button></div>
+              <p id="share-status" role="status"></p>
+              <div class="bonus-card">
+                <div><span class="eyebrow">BONUS GAME</span><h4>Neuron Run</h4><p>Pilot a little AI robot across moving neurons.</p></div>
+                <button class="primary-button" id="bonus-open">Play bonus <span aria-hidden="true">↗</span></button>
+              </div>
+            </div>
+          </div>
+          <aside class="side-column" aria-label="Your score and scoring rules">
+            <div class="score-card">
+              <div class="score-card-top"><span class="eyebrow">YOUR SCORE</span><span aria-hidden="true">↗</span></div>
+              <div class="score-number"><span id="score">0</span><span>PTS</span></div>
+              <div class="streak-display"><span aria-hidden="true">ϟ</span><strong id="streak">0</strong><span>answer streak</span><span class="streak-dots" id="streak-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></div>
+              <div class="personal-best"><span>⌁ &nbsp; Personal best</span><strong id="personal-best">0</strong></div>
+              <span class="best-caption">This playlist</span>
+            </div>
+            <div class="how-card"><h3>Scoring</h3><p>Correct answer: <strong>+100 points.</strong><br>Streak bonus: <strong>up to +100 extra.</strong></p><div class="no-timer"><span aria-hidden="true">◷</span> No timer.</div><button id="rules-open" class="text-button">How points work <span aria-hidden="true">↗</span></button></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="sr-only" id="announcer" aria-live="polite" aria-atomic="true"></div>
+  <p class="storage-notice" id="storage-notice" role="status" hidden></p>
+  <dialog id="glossary-dialog" aria-labelledby="glossary-title"><div class="dialog-top"><div><span class="eyebrow">THE POCKET FIELD GUIDE</span><h2 id="glossary-title">Jargon, translated.</h2></div><button class="close-button" data-close="glossary-dialog" aria-label="Close field guide">×</button></div><label class="sr-only" for="glossary-search">Search concepts</label><input id="glossary-search" type="search" placeholder="Find a concept..." autocomplete="off"><div id="glossary-list"></div></dialog>
+  <dialog id="rules-dialog" aria-labelledby="rules-title"><div class="dialog-top"><h2 id="rules-title">A little momentum.</h2><button class="close-button" data-close="rules-dialog" aria-label="Close scoring rules">×</button></div><p>Every correct answer earns <strong>100 points</strong>. Consecutive correct answers add a streak bonus:</p><div class="rules-grid"><span>1st correct</span><strong>100 pts</strong><span>2nd in a row</span><strong>125 pts</strong><span>3rd in a row</span><strong>150 pts</strong><span>4th in a row</span><strong>175 pts</strong><span>5th and beyond</span><strong>200 pts</strong></div><p>A wrong answer earns 0 and resets the streak, but never subtracts points. A perfect 10-question run earns <strong>1,750 points</strong>. There's no speed bonus, so take your time.</p><p class="muted">Personal bests stay in this browser, separately for each playlist. This is a personal challenge, not a global leaderboard.</p></dialog>
+  <dialog id="switch-dialog" aria-labelledby="switch-title"><h2 id="switch-title">Try a different playlist?</h2><p>Your current run will restart. Your saved personal bests will stay.</p><div class="switch-actions"><button class="primary-button" id="confirm-switch">Switch playlist</button><button class="text-button" id="cancel-switch">Keep playing</button></div></dialog>
+  <dialog id="bonus-dialog" aria-labelledby="bonus-title" aria-describedby="bonus-instructions">
+    <div class="dialog-top"><div><span class="eyebrow">BONUS ARCADE</span><h2 id="bonus-title">Neuron Run</h2></div><button class="close-button" data-close="bonus-dialog" aria-label="Close bonus game">×</button></div>
+    <p id="bonus-instructions">Pilot your AI robot across moving neurons. Token +10, vector +25. Every 100 collected points earns a life; quiz points stay separate.</p>
+    <div class="bonus-stats"><div><span>LAYER</span><strong id="bonus-layer">1 / 3</strong></div><div><span>BONUS POINTS</span><strong id="bonus-score">0</strong></div><div><span>LIVES</span><strong id="bonus-lives">3</strong></div></div>
+    <div class="bonus-stage" id="bonus-stage">
+      <canvas id="bonus-canvas" width="760" height="360" tabindex="0" aria-label="Neuron Run AI robot game. Use left and right arrows or A and D to move, and Space, W, or Up arrow to jump." aria-describedby="bonus-instructions">Your browser needs canvas support to play the bonus game.</canvas>
+      <div class="bonus-loot-hud"><span id="bonus-life-label">NEXT LIFE <strong id="bonus-life-progress">0 / 100</strong></span><progress id="bonus-life-meter" value="0" max="100" aria-labelledby="bonus-life-label"></progress><span class="bonus-loot-key"><span>Token +10</span><span>Vector +25</span></span></div>
+      <div class="game-overlay" id="bonus-overlay">
+        <div><span class="game-overlay-label">READY, SIGNAL?</span><h3 id="bonus-overlay-title">Make the leap.</h3><p id="bonus-overlay-copy">Reach the gate at the end of each layer.</p><button class="primary-button" id="bonus-start">Start game</button></div>
+      </div>
+    </div>
+    <p class="bonus-feedback" id="bonus-feedback" role="status" aria-atomic="true">Ready when you are.</p>
+    <div class="gamepad" role="group" aria-label="Game controls">
+      <button class="gamepad-button" data-game-control="left" type="button" aria-label="Move left" disabled>←</button>
+      <button class="gamepad-button" data-game-control="right" type="button" aria-label="Move right" disabled>→</button>
+      <button class="gamepad-button gamepad-jump" data-game-control="jump" type="button" aria-label="Jump" disabled>↑ &nbsp; JUMP</button>
+    </div>
+    <div class="bonus-controls"><span>← → or A / D to move &nbsp; · &nbsp; Space, W or ↑ to jump<br>Mouse: move, release, then click Jump.</span><button class="text-button" id="bonus-pause" disabled>Pause</button></div>
+  </dialog>
+  <noscript><div class="noscript">Please enable JavaScript to play AI Quiz. Everything runs in your browser; no account or AI service is needed.</div></noscript>
+</body>
+</html>
