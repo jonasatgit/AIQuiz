@@ -8,23 +8,19 @@
   <title>AI Quiz</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=footer">
+  <link rel="stylesheet" href="styles.css?v=larger-network">
   <script src="questions.js" defer></script>
-  <script src="app.js?v=footer" defer></script>
+  <script src="app.js?v=quiz-tabs" defer></script>
   <script src="arcade.js?v=hidden-games" defer></script>
 </head>
 <body>
   <div class="page-shell">
     <header class="site-header">
-      <div class="brand-group">
-        <a class="brand" href="./" aria-label="AI Quiz home"><svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 24 11 10M24 24 38 11M24 24 10 36M24 24 37 37M24 24V7M24 24v17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="currentColor"/><circle cx="11" cy="10" r="3" fill="currentColor"/><circle cx="38" cy="11" r="3" fill="currentColor"/><circle cx="10" cy="36" r="3" fill="currentColor"/><circle cx="37" cy="37" r="3" fill="currentColor"/><circle cx="24" cy="6" r="2" fill="currentColor"/><circle cx="24" cy="42" r="2" fill="currentColor"/></svg> AI Quiz</a>
-        <h1 class="header-tagline">Make a little <span class="serif-word">sense</span> of AI<span class="lime-period">.</span></h1>
-      </div>
-      <div class="neural-art">
-        <button class="network-secret network-secret-left" id="all-questions-open" type="button" aria-label="Play all questions" title="Play all questions">↗</button>
-        <svg id="neural-network" viewBox="0 0 620 150" aria-hidden="true"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
-        <button class="network-secret network-secret-right" id="bonus-secret-open" type="button" aria-label="Play Neuron Run" title="Play Neuron Run">↗</button>
-      </div>
+      <nav class="site-tabs" role="tablist" aria-label="Explore AI">
+        <button class="site-tab brand" id="tab-quiz" type="button" role="tab" aria-selected="true" aria-controls="panel-quiz"><svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 24 11 10M24 24 38 11M24 24 10 36M24 24 37 37M24 24V7M24 24v17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="currentColor"/><circle cx="11" cy="10" r="3" fill="currentColor"/><circle cx="38" cy="11" r="3" fill="currentColor"/><circle cx="10" cy="36" r="3" fill="currentColor"/><circle cx="37" cy="37" r="3" fill="currentColor"/><circle cx="24" cy="6" r="2" fill="currentColor"/><circle cx="24" cy="42" r="2" fill="currentColor"/></svg> AI Quiz</button>
+        <button class="site-tab" id="tab-perceptron" type="button" role="tab" aria-selected="false" aria-controls="panel-perceptron" tabindex="-1">Perceptron</button>
+        <button class="site-tab" id="tab-llm" type="button" role="tab" aria-selected="false" aria-controls="panel-llm" tabindex="-1">LLM</button>
+      </nav>
       <nav class="header-actions" aria-label="Page links and settings">
         <a class="github-link" href="https://github.com/jonasatgit/AIQuiz">GitHub <span aria-hidden="true">↗</span></a>
         <button class="text-button" id="glossary-open">The field guide <span aria-hidden="true">↗</span></button>
@@ -33,10 +29,17 @@
     </header>
 
     <main>
-      <section class="arcade" aria-labelledby="arcade-title">
+      <section class="arcade" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz" tabindex="0">
         <div class="section-top">
-          <h2 id="arcade-title" class="sr-only">Quiz</h2>
-          <div class="mode-wrap"><label for="mode">YOUR PLAYLIST</label><select id="mode"><option value="mixed">Mixed signals</option><option value="foundations">The foundations</option><option value="mechanics">Inside the model</option><option value="language">Language &amp; trust</option><option value="all" hidden>All questions</option></select></div>
+          <h1 class="sr-only">AI Quiz</h1>
+          <div class="quiz-toolbar">
+            <div class="neural-art">
+              <button class="network-secret network-secret-left" id="all-questions-open" type="button" aria-label="Play all questions" title="Play all questions">↗</button>
+              <svg id="neural-network" viewBox="0 0 620 150" aria-hidden="true"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
+              <button class="network-secret network-secret-right" id="bonus-secret-open" type="button" aria-label="Play Neuron Run" title="Play Neuron Run">↗</button>
+            </div>
+            <div class="mode-wrap"><label for="mode">YOUR PLAYLIST</label><select id="mode"><option value="mixed">Mixed signals</option><option value="foundations">The foundations</option><option value="mechanics">Inside the model</option><option value="language">Language &amp; trust</option><option value="all" hidden>All questions</option></select></div>
+          </div>
         </div>
         <div class="game-layout">
           <div class="quiz-panel" id="quiz-panel">
@@ -78,10 +81,20 @@
           </aside>
         </div>
       </section>
+      <section class="coming-soon" id="panel-perceptron" role="tabpanel" aria-labelledby="tab-perceptron" tabindex="0" hidden>
+        <span class="eyebrow">COMING SOON</span>
+        <h1>Perceptron</h1>
+        <p>More about perceptrons is on its way.</p>
+      </section>
+      <section class="coming-soon" id="panel-llm" role="tabpanel" aria-labelledby="tab-llm" tabindex="0" hidden>
+        <span class="eyebrow">COMING SOON</span>
+        <h1>LLM</h1>
+        <p>More about large language models is on its way.</p>
+      </section>
     </main>
     <footer class="site-footer" id="site-footer">
       <details class="footer-about" id="footer-about">
-        <summary>About AI Quiz</summary>
+        <summary>About this page</summary>
         <p>A static, browser-based AI vocabulary quiz. This website and its code were created with AI assistance. The content is educational and may contain errors. The site is provided “as is,” without warranties.</p>
       </details>
       <a href="https://github.com/jonasatgit/AIQuiz">GitHub repository <span aria-hidden="true">↗</span></a>

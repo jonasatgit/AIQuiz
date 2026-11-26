@@ -12,7 +12,8 @@ This website and its code were created with AI assistance. The content is educat
 - Correct answers earn 100 points, plus a streak bonus of 25, 50, 75, then 100 points. Maximum: **1,750 points per 10-question run**; longer runs continue at up to 200 points per question.
 - Wrong answers reset the streak without subtracting points. There is no timer.
 - Personal bests are saved per playlist in this browser's local storage after a completed run. They are not synced or a secure competitive leaderboard.
-- Two hidden buttons sit at the left and right edges of the header's neuron animation. The left starts an all-questions run, independent of the selected playlist; the right starts Neuron Run immediately. They are also reachable by keyboard. An all-questions run has a separate personal best for each question-bank size.
+- Two hidden buttons sit at the left and right edges of the neuron animation above the quiz. The left starts an all-questions run, independent of the selected playlist; the right starts Neuron Run immediately. They are also reachable by keyboard. An all-questions run has a separate personal best for each question-bank size.
+- The Perceptron and LLM tabs are coming-soon placeholders. Switching tabs preserves the current quiz.
 - The searchable field guide contains all 45 concepts.
 - Dark mode follows your device setting until you use the header toggle. Your selected theme is saved in this browser.
 - Every completed quiz, including a zero-point run, offers **Neuron Run**, an optional platform game. Pilot a little AI robot across three layers of moving neurons. Use the arrow keys or A/D to move and Space, W, or Up to jump. With touch, hold a direction and tap Jump. With a mouse, move, release the direction, and click Jump to carry that direction through the air.
