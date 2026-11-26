@@ -63,6 +63,7 @@
   function renderQuestion(focus) {
     const question = state.questions[state.index];
     state.answered = false;
+    $("question-view").classList.remove("answered");
     $("question-counter").textContent = `QUESTION ${String(state.index + 1).padStart(2, "0")} / 10`;
     $("topic-pill").textContent = categories[question.category].toUpperCase();
     $("progress-fill").style.width = `${state.index * 10}%`;
@@ -130,6 +131,7 @@
     $("explanation").hidden = false;
     $("quiz-bottom").hidden = false;
     $("next-button").hidden = false;
+    $("question-view").classList.add("answered");
     $("progress-fill").style.width = `${(state.index + 1) * 10}%`;
     $("progress").setAttribute("aria-valuenow", state.index + 1);
     updateScore();

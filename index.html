@@ -8,9 +8,9 @@
   <title>AI Quiz</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=quiz-layout">
+  <link rel="stylesheet" href="styles.css?v=compact-quiz">
   <script src="questions.js" defer></script>
-  <script src="app.js?v=quiz-layout" defer></script>
+  <script src="app.js?v=compact-quiz" defer></script>
   <script src="arcade.js?v=robot-run" defer></script>
 </head>
 <body>
@@ -20,6 +20,9 @@
         <a class="brand" href="./" aria-label="AI Quiz home"><svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 24 11 10M24 24 38 11M24 24 10 36M24 24 37 37M24 24V7M24 24v17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="currentColor"/><circle cx="11" cy="10" r="3" fill="currentColor"/><circle cx="38" cy="11" r="3" fill="currentColor"/><circle cx="10" cy="36" r="3" fill="currentColor"/><circle cx="37" cy="37" r="3" fill="currentColor"/><circle cx="24" cy="6" r="2" fill="currentColor"/><circle cx="24" cy="42" r="2" fill="currentColor"/></svg> AI Quiz</a>
         <h1 class="header-tagline">Make a little <span class="serif-word">sense</span> of AI<span class="lime-period">.</span></h1>
       </div>
+      <div class="neural-art" aria-hidden="true">
+        <svg id="neural-network" viewBox="0 0 620 150"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
+      </div>
       <nav class="header-actions" aria-label="Page links and settings">
         <a class="github-link" href="https://github.com/jonasatgit/AIQuiz">GitHub <span aria-hidden="true">↗</span></a>
         <button class="text-button" id="glossary-open">The field guide <span aria-hidden="true">↗</span></button>
@@ -28,12 +31,6 @@
     </header>
 
     <main>
-      <div class="hero" aria-hidden="true">
-        <div class="neural-art">
-          <svg id="neural-network" viewBox="0 0 620 150"><g id="network-lines"></g><g id="network-pulses"></g><g id="network-nodes"></g></svg>
-        </div>
-      </div>
-
       <section class="arcade" aria-labelledby="arcade-title">
         <div class="section-top">
           <h2 id="arcade-title" class="sr-only">Quiz</h2>
